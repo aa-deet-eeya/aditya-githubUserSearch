@@ -13,6 +13,7 @@ import {
   Center,
 } from "@chakra-ui/react";
 import { SearchIcon } from "@chakra-ui/icons";
+import { Link } from "react-router-dom";
 
 interface Result {
   id: string;
@@ -23,9 +24,9 @@ interface Result {
 
 const userBox = (user: Result) => {
   return (
-    <Box key={user.id} p={4}>
-      {user.login}
-    </Box>
+    <Link key={user.id} to={`/u/${user.login}`}>
+      <Box p={4}>{user.login}</Box>
+    </Link>
   );
 };
 
@@ -47,7 +48,6 @@ export const SearchBar: React.FC = () => {
           console.log(error);
         });
   }, [input]);
-
   console.log(input);
   return (
     <>
@@ -78,7 +78,13 @@ export const SearchBar: React.FC = () => {
               />
             </InputGroup>
             {input.length > 1 && result.length > 1 && (
-              <Box m={2} w="100%" h="500px" overflowY="scroll">
+              <Box
+                onClick={onClose}
+                m={2}
+                w="100%"
+                h="500px"
+                overflowY="scroll"
+              >
                 {result.map((user) => {
                   return userBox(user);
                 })}
