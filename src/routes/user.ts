@@ -88,7 +88,6 @@ const login = async (req: Request, res: Response) => {
 
     // Check Password
     const passwordMatches = await bcrypt.compare(password, user.passwordHash);
-
     if (!passwordMatches)
       return res.status(401).json({
         success: false,
@@ -98,12 +97,17 @@ const login = async (req: Request, res: Response) => {
     // Login using above credentials
     const token = jsonwebtoken.sign({ username }, process.env.JWT_SECRET);
     // Store the session token in cookie
+    res.header("Access-Control-Allow-Origin", "*");
+    res.header(
+      "Access-Control-Allow-Headers",
+      "Origin, X-Requested-With, Content-Type, Accept"
+    );
     res.set(
       "Set-Cookie",
       cookie.serialize("githubUserSearch-session", token, {
         httpOnly: true,
         secure: process.env.NODE_ENV === "production",
-        sameSite: "strict",
+        // sameSite: "strict",
         maxAge: 2592000, // 30 days
         path: "/",
       })
@@ -111,8 +115,7 @@ const login = async (req: Request, res: Response) => {
     return res.status(200).json({
       success: true,
       msg: "Login Successfull",
-      token: token,
-      user: user,
+      user: token,
     });
   } catch (err) {
     console.log(err);
@@ -157,6 +160,6 @@ const router = Router();
 router.post("/register", register);
 router.post("/login", login);
 router.get("/logout", logout);
-router.get("/isAuthenticated", checkAuth, isAuthenticated);
+router.post("/isAuthenticated", checkAuth, isAuthenticated);
 
 export default router;

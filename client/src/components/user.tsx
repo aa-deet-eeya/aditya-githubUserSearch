@@ -11,7 +11,8 @@ import { StarIcon } from "@chakra-ui/icons";
 import axios from "axios";
 import React, { useEffect } from "react";
 import { useState } from "react";
-import { useParams } from "react-router";
+import { Redirect, useParams } from "react-router";
+import Cookies from "universal-cookie";
 
 interface UserResult {
   id: string;
@@ -36,7 +37,11 @@ interface Repo {
   html_url: string;
 }
 
-export const UserPage: React.FC = () => {
+interface userPageI {
+  fav: string[];
+}
+
+export const UserPage: React.FC<userPageI> = (props) => {
   const init = {
     id: "",
     name: "",
@@ -53,6 +58,24 @@ export const UserPage: React.FC = () => {
   let { user } = useParams() as { user: string };
   const [userDetails, setUserDetails] = useState<UserResult>(init);
   const [repos, setRepos] = useState<Repo[]>([]);
+  const [redirect, setRedirect] = useState(false);
+  const cookies = new Cookies();
+  const [favs, setFavs] = useState(cookies.get("fav"));
+  // let favs = cookies.get("fav");
+  const addFav = (user: string) => {
+    const cookies = new Cookies();
+    axios
+      .post("http://localhost:8000/fav", {
+        favName: user,
+        token: cookies.get("githubUserSearch-session"),
+      })
+      .then((res) => {
+        console.log(res);
+        cookies.set("fav", res.data.newUser.favs);
+        setFavs(res.data.newUser.favs);
+      })
+      .catch((err) => console.log(err));
+  };
   useEffect(() => {
     setUserDetails(init);
     setRepos([]);
@@ -64,6 +87,7 @@ export const UserPage: React.FC = () => {
       })
       .catch((err) => {
         console.log(err);
+        setRedirect(true);
       });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user]);
@@ -77,7 +101,9 @@ export const UserPage: React.FC = () => {
       })
       .catch((err) => console.log(err));
   }, [userDetails]);
-  return (
+  return redirect ? (
+    <Redirect to="/404" />
+  ) : (
     <>
       <Box ml={5} mr={5} p={4} borderWidth="1px" borderRadius="lg">
         <Flex>
@@ -169,7 +195,11 @@ export const UserPage: React.FC = () => {
             </>
           )}
         </Box>
-        <Button rightIcon={<StarIcon />}>Add User to Favorites</Button>
+        <Button onClick={() => addFav(user)} rightIcon={<StarIcon />}>
+          {favs.includes(user)
+            ? "Remove User from Favorites"
+            : "Add User to Favorites"}
+        </Button>
       </Flex>
     </>
   );

@@ -6,7 +6,7 @@ import User from "../models/users";
 export default async (req: Request, res: Response, next: NextFunction) => {
   try {
     // Get details from the Cookie
-    const token = req.cookies["githubUserSearch-session"];
+    const token = req.body.token;
     if (!token) throw new Error("Unauthenticated");
 
     const { username }: any = jwt.verify(token, process.env.JWT_SECRET);
