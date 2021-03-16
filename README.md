@@ -6,6 +6,7 @@ This App uses Node.js and Express as Backend and MongoDB as DataBase. For the fr
 
 ## Known Bugs :
 - No update on Redirect to homepage '/'. (Have to hard-referesh to update)
+- Memory quota exceeding on Heroku Free tier
 
 
 ## Deployment :

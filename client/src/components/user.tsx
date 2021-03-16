@@ -195,11 +195,13 @@ export const UserPage: React.FC<userPageI> = (props) => {
             </>
           )}
         </Box>
-        <Button onClick={() => addFav(user)} rightIcon={<StarIcon />}>
-          {favs.includes(user)
-            ? "Remove User from Favorites"
-            : "Add User to Favorites"}
-        </Button>
+        {favs && (
+          <Button onClick={() => addFav(user)} rightIcon={<StarIcon />}>
+            {favs && favs.includes(user)
+              ? "Remove User from Favorites"
+              : "Add User to Favorites"}
+          </Button>
+        )}
       </Flex>
     </>
   );
