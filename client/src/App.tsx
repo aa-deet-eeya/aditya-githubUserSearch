@@ -36,7 +36,7 @@ export const App: React.FC = () => {
   useEffect(() => {
     const cookies = new Cookies();
     axios
-      .post("http://localhost:8000/api/isAuthenticated/", {
+      .post("/api/isAuthenticated/", {
         token: cookies.get("githubUserSearch-session"),
       })
       .then((result: resultI) => {

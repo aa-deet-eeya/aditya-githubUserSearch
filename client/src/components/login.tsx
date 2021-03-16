@@ -17,7 +17,7 @@ export const Login: React.FC<loginProps> = (props) => {
   useEffect(() => {
     const cookies = new Cookies();
     axios
-      .post("http://localhost:8000/api/isAuthenticated/", {
+      .post("/api/isAuthenticated/", {
         token: cookies.get("githubUserSearch-session"),
       })
       .then((result) => {
@@ -38,7 +38,7 @@ export const Login: React.FC<loginProps> = (props) => {
           console.log(values);
           const config: AxiosRequestConfig = {
             method: "post",
-            url: "http://localhost:8000/api/login",
+            url: "/api/login",
             data: { ...values },
           };
           axios(config)

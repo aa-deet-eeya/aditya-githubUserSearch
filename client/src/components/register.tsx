@@ -15,7 +15,7 @@ const Register: React.FC<registerPropsI> = (props) => {
   useEffect(() => {
     const cookies = new Cookies();
     axios
-      .post("http://localhost:8000/api/isAuthenticated/", {
+      .post("/api/isAuthenticated/", {
         token: cookies.get("githubUserSearch-session"),
       })
       .then((result) => {
@@ -36,7 +36,7 @@ const Register: React.FC<registerPropsI> = (props) => {
           console.log(values);
           const config: AxiosRequestConfig = {
             method: "post",
-            url: "http://localhost:8000/api/register",
+            url: "/api/register",
             data: { ...values },
           };
           axios(config)

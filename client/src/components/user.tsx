@@ -65,7 +65,7 @@ export const UserPage: React.FC<userPageI> = (props) => {
   const addFav = (user: string) => {
     const cookies = new Cookies();
     axios
-      .post("http://localhost:8000/fav", {
+      .post("/fav", {
         favName: user,
         token: cookies.get("githubUserSearch-session"),
       })
