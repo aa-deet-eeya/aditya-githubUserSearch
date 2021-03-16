@@ -31,7 +31,7 @@ app.use(cookieParser());
 //   res.send("Hello World");
 // });
 
-app.use(express.static(`${__dirname}/../client/build`));
+// app.use(express.static(`${__dirname}/../client/build`));
 
 app.use("/api/", userRoutes);
 app.use("/fav/", favRoute);
