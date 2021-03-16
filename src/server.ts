@@ -41,5 +41,5 @@ app.get("*", (req, res) => {
 });
 
 app.listen(process.env.PORT, async () => {
-  console.log("server running");
+  console.log(`server running at PORT : ${process.env.PORT}`);
 });
