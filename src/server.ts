@@ -30,11 +30,14 @@ app.use(cookieParser());
 // app.get("/", (_, res) => {
 //   res.send("Hello World");
 // });
+
+app.use(express.static(`${__dirname}/../client/build`));
+
 app.use("/api/", userRoutes);
 app.use("/fav/", favRoute);
 
 app.get("*", (req, res) => {
-  res.sendFile(`${__dirname}/../frontend/build/index.html`);
+  res.sendFile(`${__dirname}/../client/build/index.html`);
 });
 
 app.listen(process.env.PORT, async () => {
