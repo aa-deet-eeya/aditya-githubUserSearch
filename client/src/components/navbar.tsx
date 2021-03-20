@@ -27,8 +27,9 @@ interface navbarProps {
 }
 
 const logout = () => {
-  console.log("logout");
+  //console.log("logout");
   const cookie = new Cookies();
+  cookie.set("fav", []);
   cookie.set("githubUserSearch-session", "remove", {
     path: "/",
     sameSite: "strict",
@@ -37,6 +38,7 @@ const logout = () => {
     path: "/",
     sameSite: "strict",
   });
+  cookie.remove("fav");
   window.location.reload();
 };
 

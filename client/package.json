@@ -15,6 +15,7 @@
     "@types/react": "^16.14.5",
     "@types/react-dom": "^16.9.11",
     "@types/react-router-dom": "^5.1.7",
+    "@types/yup": "^0.29.11",
     "axios": "^0.21.1",
     "formik": "^2.2.6",
     "framer-motion": "^3.10.3",
@@ -23,15 +24,19 @@
     "react-icons": "^3.11.0",
     "react-router-dom": "^5.2.0",
     "react-scripts": "4.0.3",
+    "serve": "^11.3.2",
     "typescript": "^3.9.9",
     "universal-cookie": "^4.0.4",
-    "web-vitals": "^0.2.4"
+    "web-vitals": "^0.2.4",
+    "yup": "^0.32.9"
   },
   "scripts": {
-    "start": "react-scripts start",
+    "start": "serve -s build",
+    "dev": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "heroku-postbuild": "npm install && npm run build"
   },
   "eslintConfig": {
     "extends": "react-app"
@@ -47,6 +52,5 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
-  },
-  "proxy" : ""
+  }
 }

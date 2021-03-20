@@ -1,6 +1,11 @@
 import * as React from "react";
-import { ChakraProvider, Box, theme } from "@chakra-ui/react";
-import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import { ChakraProvider, Box, theme, Spinner } from "@chakra-ui/react";
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+  Redirect,
+} from "react-router-dom";
 // import { ColorModeSwitcher } from "./ColorModeSwitcher"
 // import { SearchBar } from "./components/search"
 import { Navbar } from "./components/navbar";
@@ -28,6 +33,7 @@ interface userI {
 
 export const App: React.FC = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [isReloading, setIsReloading] = useState(true);
   const [user, setUser] = useState<userI>({
     username: "",
     favs: [],
@@ -36,18 +42,20 @@ export const App: React.FC = () => {
   useEffect(() => {
     const cookies = new Cookies();
     axios
-      .post("/api/isAuthenticated/", {
+      .post("https://aadeeteeya-server.herokuapp.com/api/isAuthenticated/", {
         token: cookies.get("githubUserSearch-session"),
       })
       .then((result: resultI) => {
-        console.log(result);
+        // //console.log(result);
         cookies.set("fav", result.data.user.favs);
         setIsAuthenticated(true);
         setUser(result.data.user);
+        setIsReloading(false);
       })
       .catch((err) => {
-        console.log(err);
+        // //console.log(err);
         setIsAuthenticated(false);
+        setIsReloading(false);
       });
   }, []);
 
@@ -60,6 +68,7 @@ export const App: React.FC = () => {
             <Route path="/login">
               <Login isAuthenticated={isAuthenticated} />
             </Route>
+            <Redirect exact from="/redirect" to="/" />
             <Route path="/register">
               <Register isAuthenticated={isAuthenticated} />
             </Route>
@@ -67,7 +76,18 @@ export const App: React.FC = () => {
               <UserPage fav={user.favs} />
             </Route>
             <Route exact path="/">
-              <Home isAuthenticated={isAuthenticated} user={user} />
+              {isReloading ? (
+                <Spinner
+                  m={5}
+                  thickness="4px"
+                  speed="0.65s"
+                  emptyColor="gray.200"
+                  color="blue.500"
+                  size="xl"
+                />
+              ) : (
+                <Home isAuthenticated={isAuthenticated} user={user} />
+              )}
             </Route>
             <Route path="*">
               <PageNotFound />

@@ -41,17 +41,18 @@ export const SearchBar: React.FC = () => {
       axios
         .get(`https://api.github.com/search/users?per_page=20&q=${input}`)
         .then((res) => {
-          console.log(res.data);
+          //console.log(res.data);
           setResult(res.data.items);
         })
         .catch((error) => {
-          console.log(error);
+          //console.log(error);
         });
   }, [input]);
-  console.log(input);
+  //console.log(input);
+  const finalRef: any = React.useRef();
   return (
     <>
-      <Box onClick={onOpen}>
+      <Box ref={finalRef} onClick={onOpen}>
         <InputGroup>
           <InputLeftElement
             pointerEvents="none"
@@ -61,7 +62,7 @@ export const SearchBar: React.FC = () => {
         </InputGroup>
       </Box>
 
-      <Modal isOpen={isOpen} onClose={onClose}>
+      <Modal finalFocusRef={finalRef} isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
         <ModalContent>
           <ModalBody>
